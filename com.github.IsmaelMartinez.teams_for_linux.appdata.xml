@@ -14,6 +14,14 @@
   <url type="bugtracker">https://github.com/IsmaelMartinez/teams-for-linux/issues</url>
   <launchable type="desktop-id">com.github.IsmaelMartinez.teams_for_linux.desktop</launchable>
   <releases>
+    <release version="2.22.1-binary.5" date="2026-09-24">
+      <description>
+        <ul>
+          <li>Update outgoing binary text through CKEditor's native command pipeline</li>
+          <li>Allow Teams' compose service to settle before replaying the Send action</li>
+        </ul>
+      </description>
+    </release>
     <release version="2.22.1-binary.4" date="2026-09-24">
       <description>
         <ul>

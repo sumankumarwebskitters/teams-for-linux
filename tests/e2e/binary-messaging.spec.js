@@ -37,7 +37,8 @@ test("Binary Messaging Mode controls outgoing and received messages", async () =
       .toBe(
         "01001000 01100101 01101100 01101100 01101111"
       );
-    expect(await page.evaluate(() => globalThis.editorModelWrites)).toBe(1);
+    expect(await page.evaluate(() => globalThis.editorCommandWrites)).toBe(1);
+    expect(await page.evaluate(() => globalThis.editorModelWrites)).toBe(0);
     expect(await page.evaluate(() => globalThis.sentMessages)).toHaveLength(2);
 
     await composer.fill("😀");

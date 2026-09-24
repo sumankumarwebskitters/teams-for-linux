@@ -23,10 +23,25 @@
     <script>
       globalThis.sentMessages = [];
       globalThis.editorModelWrites = 0;
+      globalThis.editorCommandWrites = 0;
       let teamsDraftState = "";
       const composer = document.getElementById("new-message-test");
       const modelRoot = {};
       composer.ckeditorInstance = {
+        commands: {
+          get: (name) =>
+            name === "selectAll" || name === "insertText"
+              ? { isEnabled: true }
+              : undefined,
+        },
+        execute: (name, options = {}) => {
+          if (name === "selectAll") return;
+          if (name !== "insertText") throw new Error(`Unknown command: ${name}`);
+
+          composer.textContent = options.text;
+          teamsDraftState = options.text;
+          globalThis.editorCommandWrites += 1;
+        },
         model: {
           document: {
             getRoot: () => modelRoot,

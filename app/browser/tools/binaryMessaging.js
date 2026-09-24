@@ -3,6 +3,7 @@ const { isTeamsHost } = require("../../helpers/teamsHosts");
 
 const BYTE_PATTERN = /^[01]{8}$/u;
 const MIN_BINARY_BYTES = 2;
+const COMPOSER_SETTLE_MS = 100;
 const UI_ATTRIBUTE = "data-tfl-binary-ui";
 
 const SEND_BUTTON_SELECTORS = [
@@ -642,7 +643,7 @@ class BinaryMessagingController {
         this.#replayedSendButtons.delete(sendButton);
         this.#scheduledSends.delete(composer);
       }
-    }, 0);
+    }, COMPOSER_SETTLE_MS);
   }
 
   transformComposer(composer) {
@@ -736,17 +737,34 @@ class BinaryMessagingController {
   replaceCkEditorText(composer, editor, text) {
     this.#internalEdit = true;
     try {
-      editor.model.change((writer) => {
-        const root = editor.model.document.getRoot();
-        writer.remove(writer.createRangeIn(root));
-        const paragraph = writer.createElement("paragraph");
-        writer.append(paragraph, root);
-        writer.insertText(text, paragraph, 0);
-        writer.setSelection(paragraph, "end");
-      });
+      const selectAllCommand = editor.commands?.get?.("selectAll");
+      const insertTextCommand = editor.commands?.get?.("insertText");
+
+      if (
+        typeof editor.execute === "function" &&
+        selectAllCommand?.isEnabled !== false &&
+        insertTextCommand?.isEnabled !== false &&
+        selectAllCommand &&
+        insertTextCommand
+      ) {
+        // Teams commits outgoing messages from CKEditor's command pipeline,
+        // not directly from the rendered DOM. Use the same command path as
+        // native editing so Teams' compose service receives the binary draft.
+        editor.execute("selectAll");
+        editor.execute("insertText", { text });
+      } else {
+        editor.model.change((writer) => {
+          const root = editor.model.document.getRoot();
+          writer.remove(writer.createRangeIn(root));
+          const paragraph = writer.createElement("paragraph");
+          writer.append(paragraph, root);
+          writer.insertText(text, paragraph, 0);
+          writer.setSelection(paragraph, "end");
+        });
+      }
       editor.editing?.view?.focus?.();
 
-      // Programmatic CKEditor model writes update the editable DOM, but Teams
+      // Programmatic CKEditor updates change the editable DOM, but Teams
       // also keeps composer state outside the editor. Notify that integration
       // before replaying Send so it cannot submit the stale, readable draft.
       composer.dispatchEvent(
