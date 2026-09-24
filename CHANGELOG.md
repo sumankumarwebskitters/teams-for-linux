@@ -1,5 +1,35 @@
 # Changelog
 
+## [2.23.0](https://github.com/IsmaelMartinez/teams-for-linux/compare/v2.22.0...v2.23.0) (2026-09-24)
+
+
+### Features
+
+* **deeplink:** put the caret in the compose box after an in-page route ([#2991](https://github.com/IsmaelMartinez/teams-for-linux/issues/2991)) ([d4f6c7c](https://github.com/IsmaelMartinez/teams-for-linux/commit/d4f6c7c872877c8f22acf91f8e06d96d617560ca))
+* **menu:** add Open config file and Open config folder to Settings ([#2893](https://github.com/IsmaelMartinez/teams-for-linux/issues/2893)) ([92d42e3](https://github.com/IsmaelMartinez/teams-for-linux/commit/92d42e39e2283acb6883485a6715a00e81fda8bb))
+* **mqtt:** add leave command to hang up the active call ([#3002](https://github.com/IsmaelMartinez/teams-for-linux/issues/3002)) ([1758844](https://github.com/IsmaelMartinez/teams-for-linux/commit/17588444f989e34c4acf2d04daa29022a9afae46))
+
+
+### Bug Fixes
+
+* **deeplink:** keep a running call through the fallback, on any Teams host ([#2988](https://github.com/IsmaelMartinez/teams-for-linux/issues/2988)) ([56e5b14](https://github.com/IsmaelMartinez/teams-for-linux/commit/56e5b1428e43c5ddd40825ea5add94d10150ae78))
+* **notifications:** show Teams for Linux as the notification title on Linux ([#2898](https://github.com/IsmaelMartinez/teams-for-linux/issues/2898)) ([e9c8795](https://github.com/IsmaelMartinez/teams-for-linux/commit/e9c87950380f45a76d2de7978be5605524d67eda))
+
+
+### Documentation
+
+* **release:** describe the automated Flathub beta bump ([#2989](https://github.com/IsmaelMartinez/teams-for-linux/issues/2989)) ([be313c0](https://github.com/IsmaelMartinez/teams-for-linux/commit/be313c07c211c7144c1ad4e950e9a8b272433c2d))
+
+
+### CI/CD
+
+* clear the awaiting-feedback label on inline replies from fork PRs ([#2993](https://github.com/IsmaelMartinez/teams-for-linux/issues/2993)) ([d1ed961](https://github.com/IsmaelMartinez/teams-for-linux/commit/d1ed9614297dfa80c7e1735dcb63a5bb743d26e9))
+
+
+### Maintenance
+
+* **deps:** bump mqtt in the minor-and-patch group ([#2997](https://github.com/IsmaelMartinez/teams-for-linux/issues/2997)) ([a3900bf](https://github.com/IsmaelMartinez/teams-for-linux/commit/a3900bff1e9b5d6cabd560e6466f37de05a2ee7a))
+
 ## [2.22.0](https://github.com/IsmaelMartinez/teams-for-linux/compare/v2.21.0...v2.22.0) (2026-09-18)
 
 
