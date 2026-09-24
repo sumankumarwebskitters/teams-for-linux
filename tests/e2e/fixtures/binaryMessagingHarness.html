@@ -22,8 +22,38 @@
     </section>
     <script>
       globalThis.sentMessages = [];
+      globalThis.editorModelWrites = 0;
       let editorState = "";
       const composer = document.getElementById("new-message-test");
+      const modelRoot = {};
+      composer.ckeditorInstance = {
+        model: {
+          document: {
+            getRoot: () => modelRoot,
+          },
+          change: (callback) => {
+            let nextText = "";
+            callback({
+              createRangeIn: () => ({}),
+              remove: () => {},
+              createElement: () => ({}),
+              append: () => {},
+              insertText: (text) => {
+                nextText = text;
+              },
+              setSelection: () => {},
+            });
+            composer.textContent = nextText;
+            editorState = nextText;
+            globalThis.editorModelWrites += 1;
+          },
+        },
+        editing: {
+          view: {
+            focus: () => composer.focus(),
+          },
+        },
+      };
       composer.addEventListener("input", () => {
         queueMicrotask(() => {
           editorState = composer.innerText;

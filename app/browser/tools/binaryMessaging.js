@@ -670,6 +670,14 @@ class BinaryMessagingController {
   }
 
   replaceComposerText(composer, text) {
+    const editor = composer.ckeditorInstance;
+    if (
+      editor?.model?.document?.getRoot &&
+      typeof editor.model.change === "function"
+    ) {
+      return this.replaceCkEditorText(composer, editor, text);
+    }
+
     const selection = this.#window.getSelection?.();
     if (!selection || typeof this.#document.createRange !== "function") {
       return false;
@@ -718,6 +726,26 @@ class BinaryMessagingController {
         })
       );
       return composerText(composer) === text;
+    } finally {
+      this.#internalEdit = false;
+    }
+  }
+
+  replaceCkEditorText(composer, editor, text) {
+    this.#internalEdit = true;
+    try {
+      editor.model.change((writer) => {
+        const root = editor.model.document.getRoot();
+        writer.remove(writer.createRangeIn(root));
+        const paragraph = writer.createElement("paragraph");
+        writer.append(paragraph, root);
+        writer.insertText(text, paragraph, 0);
+        writer.setSelection(paragraph, "end");
+      });
+      editor.editing?.view?.focus?.();
+      return composerText(composer).trim() === text;
+    } catch {
+      return false;
     } finally {
       this.#internalEdit = false;
     }
