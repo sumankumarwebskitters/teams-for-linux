@@ -30,6 +30,10 @@
 
 * **deps:** bump mqtt in the minor-and-patch group ([#2997](https://github.com/IsmaelMartinez/teams-for-linux/issues/2997)) ([a3900bf](https://github.com/IsmaelMartinez/teams-for-linux/commit/a3900bff1e9b5d6cabd560e6466f37de05a2ee7a))
 
+### Thanks
+
+Big thanks to @app/dependabot, @babs, @DavidVallaLope, @dhananjaypesu, @nikolainyegaard for contributing to this release.
+
 ## [2.22.0](https://github.com/IsmaelMartinez/teams-for-linux/compare/v2.21.0...v2.22.0) (2026-09-18)
 
 
