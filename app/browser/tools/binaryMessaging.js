@@ -188,6 +188,8 @@ class BinaryMessagingController {
   #controls = new WeakMap();
   #messageStates = new WeakMap();
   #pendingEncoded = new WeakMap();
+  #scheduledSends = new WeakSet();
+  #replayedSendButtons = new WeakSet();
   #pendingRoots = new Set();
   #scanScheduled = false;
   #lastComposer = null;
@@ -541,9 +543,15 @@ class BinaryMessagingController {
   }
 
   onClick(event) {
-    if (!this.#modeEnabled || !isElement(event.target)) return;
+    if (!isElement(event.target)) return;
 
     const sendButton = event.target.closest(SEND_BUTTON_SELECTOR);
+    if (sendButton && this.#replayedSendButtons.has(sendButton)) {
+      this.#replayedSendButtons.delete(sendButton);
+      return;
+    }
+    if (!this.#modeEnabled) return;
+
     if (
       !sendButton ||
       sendButton.disabled ||
@@ -553,8 +561,10 @@ class BinaryMessagingController {
     }
 
     const composer = this.findComposerForSend(sendButton);
-    if (composer) {
-      this.transformComposer(composer);
+    if (composer && this.transformComposer(composer)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      this.scheduleSend(composer, sendButton);
     }
   }
 
@@ -600,7 +610,37 @@ class BinaryMessagingController {
     ) {
       return;
     }
-    this.transformComposer(composer);
+    if (this.transformComposer(composer)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      this.scheduleSend(composer, sendButton);
+    }
+  }
+
+  scheduleSend(composer, sendButton) {
+    if (this.#scheduledSends.has(composer)) return;
+
+    const encoded = this.#pendingEncoded.get(composer);
+    if (!encoded) return;
+    this.#scheduledSends.add(composer);
+
+    this.#window.setTimeout?.(() => {
+      try {
+        if (
+          !composer.isConnected ||
+          !sendButton.isConnected ||
+          composerText(composer) !== encoded
+        ) {
+          return;
+        }
+
+        this.#replayedSendButtons.add(sendButton);
+        sendButton.click();
+      } finally {
+        this.#replayedSendButtons.delete(sendButton);
+        this.#scheduledSends.delete(composer);
+      }
+    }, 0);
   }
 
   transformComposer(composer) {

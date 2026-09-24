@@ -22,14 +22,19 @@
     </section>
     <script>
       globalThis.sentMessages = [];
-      document.getElementById("send-message").addEventListener("click", () => {
-        globalThis.sentMessages.push(
-          document.getElementById("new-message-test").innerText
-        );
+      let editorState = "";
+      const composer = document.getElementById("new-message-test");
+      composer.addEventListener("input", () => {
+        queueMicrotask(() => {
+          editorState = composer.innerText;
+        });
       });
-      document.getElementById("new-message-test").addEventListener("keydown", (event) => {
+      document.getElementById("send-message").addEventListener("click", () => {
+        globalThis.sentMessages.push(editorState);
+      });
+      composer.addEventListener("keydown", (event) => {
         if (event.key === "Enter" && event.ctrlKey && !event.shiftKey) {
-          globalThis.sentMessages.push(event.currentTarget.innerText);
+          globalThis.sentMessages.push(editorState);
         }
       });
     </script>

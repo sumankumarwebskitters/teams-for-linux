@@ -14,6 +14,14 @@
   <url type="bugtracker">https://github.com/IsmaelMartinez/teams-for-linux/issues</url>
   <launchable type="desktop-id">com.github.IsmaelMartinez.teams_for_linux.desktop</launchable>
   <releases>
+    <release version="2.22.1-binary.2" date="2026-09-24">
+      <description>
+        <ul>
+          <li>Synchronize the binary editor value before replaying the Teams Send action</li>
+          <li>Prevent readable-text and duplicate sends from controlled message composers</li>
+        </ul>
+      </description>
+    </release>
     <release version="2.22.1-binary.1" date="2026-09-24">
       <description>
         <ul>

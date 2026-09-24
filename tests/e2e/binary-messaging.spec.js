@@ -32,15 +32,19 @@ test("Binary Messaging Mode controls outgoing and received messages", async () =
     await expect(toggle).toHaveAttribute("aria-pressed", "true");
     await composer.fill("Hello");
     await send.click();
-    expect(await page.evaluate(() => globalThis.sentMessages.at(-1))).toBe(
-      "01001000 01100101 01101100 01101100 01101111"
-    );
+    await expect
+      .poll(() => page.evaluate(() => globalThis.sentMessages.at(-1)))
+      .toBe(
+        "01001000 01100101 01101100 01101100 01101111"
+      );
+    expect(await page.evaluate(() => globalThis.sentMessages)).toHaveLength(2);
 
     await composer.fill("😀");
     await send.click();
-    expect(await page.evaluate(() => globalThis.sentMessages.at(-1))).toBe(
-      "11110000 10011111 10011000 10000000"
-    );
+    await expect
+      .poll(() => page.evaluate(() => globalThis.sentMessages.at(-1)))
+      .toBe("11110000 10011111 10011000 10000000");
+    expect(await page.evaluate(() => globalThis.sentMessages)).toHaveLength(3);
 
     await composer.fill("plain Enter stays a newline");
     await composer.press("Enter");
@@ -48,10 +52,14 @@ test("Binary Messaging Mode controls outgoing and received messages", async () =
 
     await composer.fill("é");
     await composer.press("Control+Enter");
-    expect(await page.evaluate(() => globalThis.sentMessages.at(-1))).toBe(
-      "11000011 10101001"
-    );
+    await expect
+      .poll(() => page.evaluate(() => globalThis.sentMessages.at(-1)))
+      .toBe("11000011 10101001");
+    expect(await page.evaluate(() => globalThis.sentMessages)).toHaveLength(4);
     await send.click();
+    await expect
+      .poll(() => page.evaluate(() => globalThis.sentMessages.length))
+      .toBe(5);
     expect(await page.evaluate(() => globalThis.sentMessages.at(-1))).toBe(
       "11000011 10101001"
     );
@@ -63,6 +71,7 @@ test("Binary Messaging Mode controls outgoing and received messages", async () =
     expect(await page.evaluate(() => globalThis.sentMessages.at(-1))).toBe(
       "Hello again"
     );
+    expect(await page.evaluate(() => globalThis.sentMessages)).toHaveLength(6);
 
     const binaryMessage = page.locator("#binary-message");
     const translate = binaryMessage.locator(".tfl-binary-translate-button");
