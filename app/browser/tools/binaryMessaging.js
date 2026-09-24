@@ -129,6 +129,8 @@ function isLikelyBinaryMessage(text) {
     if (!/\S/u.test(decoded)) {
       return false;
     }
+    // These are the exact non-printing byte values binary detection rejects.
+    // eslint-disable-next-line no-control-regex
     if (/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/u.test(decoded)) {
       return false;
     }
@@ -743,6 +745,18 @@ class BinaryMessagingController {
         writer.setSelection(paragraph, "end");
       });
       editor.editing?.view?.focus?.();
+
+      // Programmatic CKEditor model writes update the editable DOM, but Teams
+      // also keeps composer state outside the editor. Notify that integration
+      // before replaying Send so it cannot submit the stale, readable draft.
+      composer.dispatchEvent(
+        new this.#InputEvent("input", {
+          bubbles: true,
+          composed: true,
+          data: text,
+          inputType: "insertReplacementText",
+        })
+      );
       return composerText(composer).trim() === text;
     } catch {
       return false;

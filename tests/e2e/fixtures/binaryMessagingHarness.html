@@ -23,7 +23,7 @@
     <script>
       globalThis.sentMessages = [];
       globalThis.editorModelWrites = 0;
-      let editorState = "";
+      let teamsDraftState = "";
       const composer = document.getElementById("new-message-test");
       const modelRoot = {};
       composer.ckeditorInstance = {
@@ -44,7 +44,6 @@
               setSelection: () => {},
             });
             composer.textContent = nextText;
-            editorState = nextText;
             globalThis.editorModelWrites += 1;
           },
         },
@@ -56,15 +55,15 @@
       };
       composer.addEventListener("input", () => {
         queueMicrotask(() => {
-          editorState = composer.innerText;
+          teamsDraftState = composer.innerText;
         });
       });
       document.getElementById("send-message").addEventListener("click", () => {
-        globalThis.sentMessages.push(editorState);
+        globalThis.sentMessages.push(teamsDraftState);
       });
       composer.addEventListener("keydown", (event) => {
         if (event.key === "Enter" && event.ctrlKey && !event.shiftKey) {
-          globalThis.sentMessages.push(editorState);
+          globalThis.sentMessages.push(teamsDraftState);
         }
       });
     </script>
