@@ -35,6 +35,34 @@ module.exports = {
         type: "number",
         applyMode: "restart",
       },
+      binaryMessaging: {
+        default: {
+          enabled: false,
+          autoDetectReceivedMessages: true,
+          showTranslateButton: true,
+        },
+        describe:
+          "Local binary-message encoding and translation controls. enabled sets the initial outgoing mode; messages are encoded as UTF-8 bytes and this is not encryption.",
+        type: "object",
+        fields: {
+          "enabled": {
+            type: "boolean",
+            describe:
+              "Start each Teams renderer with outgoing Binary Messaging Mode enabled. The composer control can still toggle it for the current session.",
+          },
+          "autoDetectReceivedMessages": {
+            type: "boolean",
+            describe:
+              "Detect conservatively formatted UTF-8 binary messages as Teams renders or edits them.",
+          },
+          "showTranslateButton": {
+            type: "boolean",
+            describe:
+              "Show a local Translate Binary action for detected binary messages without replacing the original content.",
+          },
+        },
+        applyMode: "restart",
+      },
       screenSharing: {
         default: {
           thumbnail: {

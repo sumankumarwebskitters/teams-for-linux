@@ -14,6 +14,14 @@
   <url type="bugtracker">https://github.com/IsmaelMartinez/teams-for-linux/issues</url>
   <launchable type="desktop-id">com.github.IsmaelMartinez.teams_for_linux.desktop</launchable>
   <releases>
+    <release version="2.22.1-binary.1" date="2026-09-24">
+      <description>
+        <ul>
+          <li>Add local UTF-8 Binary Messaging Mode for outgoing Teams chat messages</li>
+          <li>Add reversible local translation actions for detected binary messages</li>
+        </ul>
+      </description>
+    </release>
     <release version="2.22.0" date="2026-09-18">
       <description>
         <ul>

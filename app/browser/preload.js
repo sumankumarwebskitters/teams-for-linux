@@ -422,6 +422,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       { name: "emulatePlatform", path: "./tools/emulatePlatform" },
       { name: "webauthnOverride", path: "./tools/webauthnOverride" },
       { name: "timestampCopyOverride", path: "./tools/timestampCopyOverride" },
+      { name: "binaryMessaging", path: "./tools/binaryMessaging" },
       { name: "trayIconRenderer", path: "./tools/trayIconRenderer" },
       { name: "mqttStatusMonitor", path: "./tools/mqttStatusMonitor" },
       { name: "meetingStartDetector", path: "./tools/meetingStartDetector" },

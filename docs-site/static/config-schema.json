@@ -1,7 +1,7 @@
 {
   "$generatedBy": "scripts/generateConfigDocs.js",
   "source": "app/config/options.js",
-  "optionCount": 84,
+  "optionCount": 85,
   "options": [
     {
       "name": "appActiveCheckInterval",
@@ -9,6 +9,37 @@
       "default": 2,
       "description": "A numeric value in seconds as poll interval to check if the system is active from being idle",
       "applyMode": "restart"
+    },
+    {
+      "name": "binaryMessaging",
+      "type": "object",
+      "default": {
+        "enabled": false,
+        "autoDetectReceivedMessages": true,
+        "showTranslateButton": true
+      },
+      "description": "Local binary-message encoding and translation controls. enabled sets the initial outgoing mode; messages are encoded as UTF-8 bytes and this is not encryption.",
+      "applyMode": "restart",
+      "fields": [
+        {
+          "path": "enabled",
+          "type": "boolean",
+          "default": false,
+          "description": "Start each Teams renderer with outgoing Binary Messaging Mode enabled. The composer control can still toggle it for the current session."
+        },
+        {
+          "path": "autoDetectReceivedMessages",
+          "type": "boolean",
+          "default": true,
+          "description": "Detect conservatively formatted UTF-8 binary messages as Teams renders or edits them."
+        },
+        {
+          "path": "showTranslateButton",
+          "type": "boolean",
+          "default": true,
+          "description": "Show a local Translate Binary action for detected binary messages without replacing the original content."
+        }
+      ]
     },
     {
       "name": "screenSharing",

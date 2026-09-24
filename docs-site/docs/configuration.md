@@ -628,6 +628,34 @@ A floating sticker panel that lists image files from a local folder and pastes t
 | `customStickers.urlImport.allowedContentTypes` | `array` | `["image/png", "image/jpeg", "image/gif", "image/webp"]` | Response content-types the wrapper will accept and save when importing from a URL |
 | `customStickers.urlImport.maxBytes` | `number` | `5242880` | Per-file size cap (in bytes) for URL imports. Responses larger than this are rejected |
 
+### Binary Messaging Mode
+
+Binary Messaging Mode adds a small toggle beside the Teams message composer.
+When enabled, normal outgoing text is converted locally to space-separated
+8-bit UTF-8 binary before Teams sends it. Detected incoming binary messages keep
+their original content and gain a **Translate Binary** action that reveals the
+decoded text locally.
+
+Binary encoding is not encryption: anyone can decode it, and Teams receives the
+binary text as the message content. No message content is sent to an external
+conversion service.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `binaryMessaging.enabled` | `boolean` | `false` | Initial outgoing mode for each Teams renderer. Use the composer control to change it for the current session. |
+| `binaryMessaging.autoDetectReceivedMessages` | `boolean` | `true` | Conservatively detect valid UTF-8 binary messages as Teams renders or edits them. |
+| `binaryMessaging.showTranslateButton` | `boolean` | `true` | Show the reversible Translate Binary action without replacing the original message. |
+
+```json title="Example Configuration"
+{
+  "binaryMessaging": {
+    "enabled": false,
+    "autoDetectReceivedMessages": true,
+    "showTranslateButton": true
+  }
+}
+```
+
 ### URL & Protocol Handling
 
 | Option | Type | Default | Description |
